@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+<html>
+
+<body>
+    {% block content %}
+        <a class="btn btn-danger m-3" href="{% url 'logout' %}" >Logout</a>
+        {% for contact in contacts %}
+        <p>{{contact.nom}}   absolute url = {{contact.get_absolute_url}} </p>
+        <a href = {{contact.get_absolute_url}}>
+            {{contact.nom}}
+        </a>
+        {% endfor %}      
+    {% endblock content %}
+</body>
+
+<form method = 'POST' action ="{% url 'modification_profil' %}">
+    {% csrf_token %}
+    <button type="submit" >Test profil</button> 
+
+</html>

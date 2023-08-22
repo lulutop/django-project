@@ -1,0 +1,27 @@
+<html>
+
+<body>
+    {% block content %}
+        <p>{{message}} </p>
+        <form method = 'POST' action = "{% url 'login' %}">
+            {% csrf_token %}
+            {{form.as_ul}}
+            <button type="submit" >Se connecter</button> 
+        </form>
+
+        <small>
+            Pas encore inscrit.e?
+            <a href="{% url 'register' %}">
+                S'inscrire
+            </a>
+
+            <br>
+            Mot de passe oublié ?
+            <a href="{% url 'password_reset' %}">
+                Renouveler mon mot de passe
+            </a>
+        </small>
+    {% endblock content %}
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+
+<html>
+<body>
+    {% block content %}
+        <form action='' method = 'POST'>
+            {% csrf_token %}
+            {{form.as_ul}}
+            <input type="submit" value="valider">
+        </form>
+
+    {% endblock content %}
+
+</body>
+</html>

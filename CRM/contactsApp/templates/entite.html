@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+
+<html>
+<body>
+    {% block content %}
+        <p>{{entite.nom}}
+            {% if entite.logo.url is not None %}
+            <br/><center><img
+                width = 150px
+                src ="{{entite.logo.url}}"
+                alt = "{{entite.nom}}"/></center>
+            {% endif %}        
+        </p>       
+    {% endblock content %}
+
+</body>
+</html>

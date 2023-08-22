@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+
+<html>
+
+<body>
+    {% block content %}
+        {% for entite in entites %}
+            <a href = {{entite.get_absolute_url}}>
+                {{entite.nom}}
+            </a>
+        {% endfor %}      
+    {% endblock content %}
+</body>
+
+</html>
