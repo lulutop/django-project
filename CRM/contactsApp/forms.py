@@ -23,4 +23,4 @@ class ModificationProfil(forms.ModelForm):
         model = UserProfile
         fields = ['image']
 
-
+test = True
