@@ -1,0 +1,16 @@
+{% block content %}
+  <h2>Modifier le profil</h2>
+  <form method="post" >
+    {% csrf_token %}
+
+    {{ user_form.as_p }} 
+    {{ profile_form.as_p }}
+ 
+ 
+    <button type="submit">Update</button>
+
+  
+  </form>
+
+  <a href="{% url 'profile' %}">Retour au profil</a>
+{% endblock content %}

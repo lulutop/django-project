@@ -14,8 +14,8 @@
     {% endblock content %}
 </body>
 
-<form method = 'POST' action ="{% url 'modification_profil' %}">
+<form method = 'POST' action ="{% url 'profile' %}">
     {% csrf_token %}
-    <button type="submit" >Test profil</button> 
+    <button type="submit" >Visualisation de mon profil</button> 
 
 </html>
