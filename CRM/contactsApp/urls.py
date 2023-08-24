@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import contacts, entites, entite_detail, contact_detail, EntiteDetail, ContactDetail, page_login, register, logout_user, modification_profil
-from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
+from .views import contacts, entites, entite_detail, contact_detail, EntiteDetail, ContactDetail, page_login, register, logout_user, edit_profile, view_profile, change_password
+from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView,  PasswordChangeDoneView
 
 
 urlpatterns =[
@@ -17,8 +17,9 @@ urlpatterns =[
 	path('password_reset/done/', PasswordResetDoneView.as_view(template_name='mdp_oublie/password_reset_done.html'), name='password_reset_done'),
 	path('reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(template_name='mdp_oublie/password_reset_confirm.html'), name='password_reset_confirm'),
     path('reset/done/', PasswordResetCompleteView.as_view(template_name='mdp_oublie/password_reset_complete.html'), name='password_reset_complete'),
-    path('modification_profil/', modification_profil, name='modification_profil'),
-
+    path('edit-profile/', edit_profile, name='edit_profile'),
+    path('profile/', view_profile, name='profile'),
+    path('password/', change_password, name='password')
 ]
 
 

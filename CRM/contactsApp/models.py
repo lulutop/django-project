@@ -2,6 +2,8 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 
 
@@ -52,13 +54,17 @@ class Contact(models.Model):
 
 class UserProfile(models.Model): #Creation du profil
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=50, null=True)
+    last_name = models.CharField(max_length=50, null=True)
+    birth_date = models.DateField(null=True)
     image = models.ImageField(upload_to='images', blank=True, null=True)
 
-def create_user_profile(sender, instance, created,**kwargs):
-    if created:
+@receiver(post_save, sender=User)
+def createProfile(sender, instance, created,**kwargs):
+    if created :
         UserProfile.objects.create(user=instance)
 
-post_save.connect(create_user_profile, sender=User)
+
 
 
 
