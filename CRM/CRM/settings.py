@@ -128,7 +128,7 @@ LOGIN_REDIRECT_URL = '/contacts-app/contacts/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-AUTH_PROFILE_MODULE = 'contactsApp.models.UserProfile'
+AUTH_PROFILE_MODULE = 'contactsApp.UserProfile'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 

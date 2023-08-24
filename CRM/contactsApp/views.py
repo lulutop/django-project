@@ -5,9 +5,11 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
-from .forms import LoginForm
+from .forms import LoginForm, EditProfileForm, CustomUserChangeForm
 from django.contrib import messages
 from .models import  UserProfile
+from django.contrib.auth.views import PasswordChangeView
+from django.urls import reverse_lazy
 
 
 
@@ -89,20 +91,33 @@ def logout_user(request):
 
 
 
-def page_profil (request):
-    return render(request, 'profil.html')
+def view_profile (request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    return render(request, 'view_profile.html', {'user_profile': user_profile})
 
 
+@login_required
+def edit_profile(request):
 
-def modification_profil(request):
-    profil_utilisateur= request.user.username #profil personnalisé
-
+    user_profile = UserProfile.objects.get(user=request.user)
     if request.method == 'POST':
-        form = UserProfile(request.POST, request.FILES, instance=profil_utilisateur)
-        if form.is_valid():
-            form.save()
-            return redirect('profil')
+        user_form = CustomUserChangeForm(request.POST, instance=request.user) #pour changer les éléments qui appartiennent à la classe User (nom, prénom etc)
+        profile_form = EditProfileForm(request.POST, request.FILES, instance=user_profile) #pour changer les autres éléments de UserProfil (date de naissance, image etc)
+        print (user_form)
+        if user_form.is_valid() and profile_form.is_valid() :
+            user_form.save()
+            profile_form.save()
+            return redirect('profile')
     else:
-        form = UserProfile(instance=profil_utilisateur)
+        user_form = CustomUserChangeForm(instance=request.user)
+        profile_form = EditProfileForm(instance=user_profile)
 
-    return render(request, 'modification_profil.html', {'form': form})
+    return render(request, 'edit_profile.html',{'user_form': user_form, 'profile_form': profile_form})
+
+#Modifier son mot de passe quand l'utilisateur est connecté
+@login_required
+def change_password(request):
+    return PasswordChangeView.as_view(
+        template_name='change_password.html',
+        success_url=reverse_lazy('password_change_done')
+    )(request)
