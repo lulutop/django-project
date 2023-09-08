@@ -3,13 +3,15 @@ from .models import Contact, Entite
 from django.views.generic.detail import DetailView
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
+from django.contrib.auth.models import User
 from django import forms
-from .forms import LoginForm, EditProfileForm, CustomUserChangeForm
+from .forms import EditProfileForm, CustomUserChangeForm #LoginForm, 
 from django.contrib import messages
 from .models import  UserProfile
-from django.contrib.auth.views import PasswordChangeView
-from django.urls import reverse_lazy
+
+
+
 
 
 
@@ -33,10 +35,11 @@ def contact_detail (request, pk):
 
 
 
-
 def entites(request):
-    entites = Entite.objects.all()
-    return render(request, "entites.html", context = {'entites':entites})
+    if request.user.is_authenticated : 
+        entites = Entite.objects.all()
+        return render(request, "entites.html", context = {'entites':entites})
+
 
 class EntiteDetail(DetailView):
     model = Entite
@@ -50,9 +53,9 @@ def entite_detail(request,pk):
     entite = Entite.objects.get(pk=pk)
     return render(request, "entite.html",context = {'entite':entite})
 
-
+#connection utilisateur
 def page_login (request):
-    message = ''
+    form = AuthenticationForm(request, request.POST)
     if request.method == 'POST':
         user = authenticate(
             username = request.POST['username'],
@@ -60,14 +63,16 @@ def page_login (request):
             )
         if user is not None : #s'il existe bien en base un couple username/password saisi au préalable, la fonction authenticate renvoie l'objet utilisateur correspond. Sinon, elle renvoie None
             login(request,user)
-            messages.success (request,'Vous êtes connecté.' )
+            print(request)
+            messages.success (request,'Vous êtes connecté.', extra_tags='success' )
+            print(request)
             return redirect ('contacts')
         else :
-            message = 'Votre adresse mail ou votre mot de passe est erroné'
+            messages.error (request, 'Votre adresse mail ou votre mot de passe est erroné')
     return render(
-        request,"login.html", context={'message':message}
-    )
+        request,"login.html" ,   context= {'form' : form}  )
 
+#création d'un compte utilisateur
 def register (request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -81,22 +86,23 @@ def register (request):
             return redirect  ('contacts')
     else :
         form = UserCreationForm()
-    return render (request,"register.html", context= {'form' : form } )
+    return render (request,"register.html", context= {'form' : form} )
 
-
+#déconnection utilisateur
 @login_required #l'utilisateur doit être connecté pour se déconnecter
 def logout_user(request):
     logout(request)
     return redirect('login')
 
 
-
+#visualisation du profil utilisateur
 def view_profile (request):
     user_profile = UserProfile.objects.get(user=request.user)
     return render(request, 'view_profile.html', {'user_profile': user_profile})
 
 
-@login_required
+#modification du profil utilisateur
+@login_required #l'utilisateur doit être connecté pour modifier ses informations personnelles
 def edit_profile(request):
 
     user_profile = UserProfile.objects.get(user=request.user)
@@ -114,10 +120,4 @@ def edit_profile(request):
 
     return render(request, 'edit_profile.html',{'user_form': user_form, 'profile_form': profile_form})
 
-#Modifier son mot de passe quand l'utilisateur est connecté
-@login_required
-def change_password(request):
-    return PasswordChangeView.as_view(
-        template_name='change_password.html',
-        success_url=reverse_lazy('password_change_done')
-    )(request)
+

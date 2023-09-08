@@ -3,9 +3,19 @@
 <body>
     {% block content %}
 
+    {% if messages %}
+        <div class="message">
+          <ul>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
         <form method = 'POST' action = "{% url 'login' %}">
             {% csrf_token %}
-            {{form.as_ul}}
+            {{form.as_p}}
             <button type="submit" >Se connecter</button> 
         </form>
 
@@ -22,10 +32,13 @@
                 Renouveler mon mot de passe
             </a>
         </small>
-    
+        
 
 
     {% endblock content %}
+
+
+    
 </body>
 
 </html>

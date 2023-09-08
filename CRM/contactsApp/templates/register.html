@@ -3,22 +3,24 @@
 <body>
     {% block content %}
 
+    {% if messages %}
+    <div class="message">
+      <ul>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+   {% endif %}
 
 
-        <p>{{message}} </p>
         <form method = 'POST' action ="{% url 'register' %}">
             {% csrf_token %}
             {{form.as_p}}
             <button type="submit" >Créer le compte</button> 
         </form>
 
-        {% if messages %}
-        <ul class="messages">
-          {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
+
 
     {% endblock content %}
 </body>

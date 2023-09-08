@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django import forms
 
 
 
@@ -24,6 +25,7 @@ class Entite(models.Model):
         return reverse('entite-detail', kwargs ={'pk' : self.pk})
    
 class Contact(models.Model):
+    CHOICES = [('Linkedin','Linkedin'),('Reco','Recommandation'),('RDV tel','RDV télephonique') ]
     nom = models.CharField(max_length = 128)
     prenom = models.CharField(max_length=128)
     mail = models.EmailField(max_length=128)
@@ -35,8 +37,9 @@ class Contact(models.Model):
         null=True,
         related_name="contact")
     image = models.ImageField(upload_to='images', blank=True, null=True)
-    type_privé = models.BooleanField()
-    commentaire = models.CharField(max_length=244)
+    type_prive = models.BooleanField(null=True)
+    source_acquisition = models.CharField(max_length=128, choices = CHOICES, null=True)
+    commentaire = models.CharField(max_length=244, null=True)
 
   
     def __str__(self):
@@ -54,11 +57,12 @@ class Contact(models.Model):
 
 class UserProfile(models.Model): #Creation du profil
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=50, null=True)
-    last_name = models.CharField(max_length=50, null=True)
+ #   first_name = models.CharField(max_length=50, null=True)
+ #   last_name = models.CharField(max_length=50, null=True)
     birth_date = models.DateField(null=True)
     image = models.ImageField(upload_to='images', blank=True, null=True)
 
+#à la création d'un nouvel utilisateur, un profil rattaché va être créé
 @receiver(post_save, sender=User)
 def createProfile(sender, instance, created,**kwargs):
     if created :
