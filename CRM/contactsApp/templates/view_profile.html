@@ -1,17 +1,23 @@
 <html>
 
+{% extends 'base.html' %}
+
 <body>
     {% block content %}
 
   <h1>Mon Profil</h1>
-  <p>Prénom: {{ user.first_name }}</p>
-  <p>Nom: {{ user.last_name }}</p>
+  
+
+  <p>Prénom: {{ user_profile.first_name }}</p>
+  <p>Nom: {{ user_profile.last_name }}</p>
+  <p>Email: {{ user_profile.email }}</p>
   <p>Date de naissance: {{ user_profile.birth_date }}</p>
   <!-- Ajoutez d'autres champs ici -->
 
   <form method = 'POST' action ="{% url 'edit_profile' %}">
     {% csrf_token %}
     <button type="submit" >Modification de mon profil</button> 
+
 
     {% endblock content %}
 </body>

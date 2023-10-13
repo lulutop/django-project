@@ -1,16 +1,19 @@
-<!DOCTYPE html>
-
-<html>
 {% extends 'base.html' %}
 
-<body>
-    {% block content %}
-        {% for entite in entites %}
-            <a href = {{entite.get_absolute_url}}>
-                {{entite.nom}}
-            </a>
-        {% endfor %}      
-    {% endblock content %}
-</body>
+{% block content %}
+<div class="container">
+    {% for entite in entites %}
+        <a href = {{entite.get_absolute_url}}>
+            {{entite.nom}}
+        </a>
+    {% endfor %}  
+</div>    
 
-</html>
+<form method = 'POST' action ="{% url 'entite_new' %}">
+    {% csrf_token %}
+    <button type="submit" >Ajouter une nouvelle entité</button> 
+
+
+{% endblock content %}
+
+

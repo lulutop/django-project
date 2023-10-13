@@ -1,11 +1,21 @@
 <!DOCTYPE html>
 
 <html>
+
+{% extends 'base.html' %}
+
 <body>
     {% block content %}
         <form action='' method = 'POST'>
             {% csrf_token %}
-            {{form.as_ul}}
+            
+            <p>Nom: {{ form.nom }}</p>
+            <p>Numero: {{ form.numero }}</p>
+            <p>Adresse: {{ form.adresse }}</p>
+            <p>Code postal: {{ form.code_postal }}</p>
+            <p>Ville: {{ form.ville }}</p>
+            <p>Logo: {{ form.logo }}</p>
+
             <input type="submit" value="valider">
         </form>
 

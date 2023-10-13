@@ -2,17 +2,22 @@
 
 <html>
 
+{% extends 'base.html' %}
+
 <body>
     {% block content %}
-        <a class="btn btn-danger m-3" href="{% url 'logout' %}" >Logout</a>
+      
         {% for contact in contacts %}
         <p>{{contact.nom}}   absolute url = {{contact.get_absolute_url}} </p>
-        <a href = {{contact.get_absolute_url}}>
-            {{contact.nom}}
+        <a href = {{contact.get_absolute_url}} >
+          {% csrf_token %}  
+          {{contact.nom}}
         </a>
-        {% endfor %}      
+        {% endfor %}  
     {% endblock content %}
 </body>
+
+
 
 <form method = 'POST' action ="{% url 'profile' %}">
     {% csrf_token %}

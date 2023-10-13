@@ -23,6 +23,15 @@ class Entite(models.Model):
     
     def get_absolute_url(self):
         return reverse('entite-detail', kwargs ={'pk' : self.pk})
+    
+class SourceAcquisition(models.Model):
+    source_acquisition = models.CharField(max_length = 128)
+
+    def __str__(self):
+        return "{}".format(self.nom, self.adresse)
+    
+    def get_absolute_url(self):
+        return reverse('source_acquisition-detail', kwargs ={'pk' : self.pk})
    
 class Contact(models.Model):
     CHOICES = [('Linkedin','Linkedin'),('Reco','Recommandation'),('RDV tel','RDV télephonique') ]
@@ -38,7 +47,14 @@ class Contact(models.Model):
         related_name="contact")
     image = models.ImageField(upload_to='images', blank=True, null=True)
     type_prive = models.BooleanField(null=True)
-    source_acquisition = models.CharField(max_length=128, choices = CHOICES, null=True)
+    #source_acquisition = models.CharField(max_length=128, choices = CHOICES, null=True)
+    source_acquisition = models.ForeignKey(
+        SourceAcquisition,
+        on_delete=models.SET_NULL, 
+        null=True,
+        related_name="contact"
+    )
+
     commentaire = models.CharField(max_length=244, null=True)
 
   
@@ -52,15 +68,18 @@ class Contact(models.Model):
 #  username = models.CharField(max_length=64)
 #  password = models.CharField(max_length=64)
 #  email = models.EmailField(max_length=64)
- # first_name = models.CharField(max_length=64)
- # last_name = models.CharField(max_length=64)
+#  first_name = models.CharField(max_length=64)
+#  last_name = models.CharField(max_length=64)
 
 class UserProfile(models.Model): #Creation du profil
     user = models.OneToOneField(User, on_delete=models.CASCADE)
- #   first_name = models.CharField(max_length=50, null=True)
- #   last_name = models.CharField(max_length=50, null=True)
+    first_name = models.CharField(max_length=50, null=True)
+    last_name = models.CharField(max_length=50, null=True)
+    email = models.EmailField(max_length=64, null=True)
     birth_date = models.DateField(null=True)
-    image = models.ImageField(upload_to='images', blank=True, null=True)
+  
+    
+
 
 #à la création d'un nouvel utilisateur, un profil rattaché va être créé
 @receiver(post_save, sender=User)

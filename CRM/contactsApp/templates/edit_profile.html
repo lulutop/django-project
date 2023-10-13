@@ -1,10 +1,17 @@
+
+
+{% extends 'base.html' %}
+
 {% block content %}
   <h2>Modifier le profil</h2>
-  <form method="post" >
+  <form method="POST" action="">
     {% csrf_token %}
 
-    {{ user_form.as_p }} 
-    {{ profile_form.as_p }}
+    <p>Prénom: {{ profile_form.first_name }}</p>
+    <p>Nom: {{ profile_form.last_name }}</p>
+    <p>Email: {{ profile_form.email }}</p>
+    <p>Date de naissance: {{ profile_form.birth_date }}</p>
+  
  
  
     <button type="submit">Update</button>
@@ -12,5 +19,5 @@
   
   </form>
 
-  <a href="{% url 'profile' %}">Retour au profil</a>
+
 {% endblock content %}

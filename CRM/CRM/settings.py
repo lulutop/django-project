@@ -124,7 +124,7 @@ STATIC_URL = 'static/'
 
 MEDIA_URL = 'media/'
 
-LOGIN_REDIRECT_URL = '/contacts-app/contacts/'
+#LOGIN_REDIRECT_URL = '/contacts-app/contacts/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

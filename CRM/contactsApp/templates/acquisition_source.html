@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+{% extends 'base.html' %}
+
+<html>
+    {% block content %}
+
+    <table>
+        <tr>
+            <th>Source d'Acquisition</th>
+            <th>Répartition</th>
+        </tr>
+        {% for source, nombre in repartition.items %}
+        <tr>
+            <td>{{ source }}</td>
+            <td>{{ nombre }} %</td>
+        </tr>
+        {% endfor %}
+      </table>
+
+      {% endblock content %}
+
+</html>

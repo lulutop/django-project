@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 
 <html>
-{% extends 'base.html' %}
-<body>
+    {% extends 'base.html' %}
+
     {% block content %}
+    <title>{% block title %}My amazing site{% endblock %}</title>
         <p>{{entite.nom}}
             {% if entite.logo.url is not None %}
             <br/><center><img
@@ -14,5 +15,5 @@
         </p>       
     {% endblock content %}
 
-</body>
+
 </html>
